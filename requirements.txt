@@ -1,0 +1,6 @@
+# Python 3.12, shared/.venv. All already present in the shared venv.
+requests
+jsonschema
+pytest
+matplotlib
+pyyaml

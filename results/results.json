@@ -1,0 +1,213 @@
+{
+  "_format": {
+    "total.coveragePct": 1,
+    "total.files.median": 0,
+    "total.files.qOne": 0,
+    "total.files.qThree": 0,
+    "total.linesChanged.median": 0,
+    "total.linesChanged.qOne": 0,
+    "total.linesChanged.qThree": 0,
+    "total.lagDays.median": 0,
+    "total.lagDays.qOne": 0,
+    "total.lagDays.qThree": 0,
+    "total.fixBeforePublicationPct": 1,
+    "total.withCwePct": 1,
+    "total.zephyrSharePct": 1,
+    "extra.coreCommitsWithCPct": 1,
+    "extra.near60ZephyrPct": 1,
+    "cpe.pct": 1,
+    "extra.lagNoZephyrMedian": 0
+  },
+  "snapshotDate": "2026-10-25",
+  "nvdCves": 413944,
+  "keywordClasses": 18,
+  "poolSize": 19,
+  "selectedProjects": 14,
+  "excludedInactive": 1,
+  "excludedFewVulns": 4,
+  "excludedRank": 0,
+  "commitsScanned": 586578,
+  "total": {
+    "vulns": 686,
+    "records": 2596,
+    "fixCommits": 1985,
+    "tierAOnly": 590,
+    "tierBOnly": 1998,
+    "tierAB": 8,
+    "files": {
+      "median": 1.0,
+      "qOne": 1.0,
+      "qThree": 2.0
+    },
+    "linesChanged": {
+      "median": 14.0,
+      "qOne": 6.0,
+      "qThree": 42.0
+    },
+    "lagDays": {
+      "median": 60.0,
+      "qOne": 8.0,
+      "qThree": 66.81
+    },
+    "lagN": 633,
+    "scopeCode": 2214,
+    "scopeTest": 98,
+    "scopeDocCi": 284,
+    "tierAScopeDocCi": 274,
+    "tierBScopeDocCi": 10,
+    "fixBeforePublicationPct": 83.6,
+    "linkedVulns": 804,
+    "linkedMapped": 576,
+    "coveragePct": 71.6,
+    "citedNotLinked": 114,
+    "ghsaOnly": 50,
+    "distinctCwes": 120,
+    "withCwePct": 90.7,
+    "prUnresolved": 3,
+    "candidates": 6846,
+    "core": {
+      "vulns": 581,
+      "records": 2214,
+      "fixCommits": 1666
+    },
+    "largePrRecords": 332,
+    "largePrVulns": 23,
+    "reverts": 0,
+    "offDefaultBranch": 1364,
+    "latestYearVulns": 342,
+    "zephyrSharePct": 52.5,
+    "earliestYear": "2017",
+    "latestYear": "2026"
+  },
+  "severity": {
+    "critical": 86,
+    "high": 267,
+    "medium": 256,
+    "low": 24,
+    "none": 53
+  },
+  "project": {
+    "zephyr": {
+      "vulns": 360,
+      "candidates": 2441
+    },
+    "riot": {
+      "vulns": 32,
+      "candidates": 385
+    },
+    "contiki-ng": {
+      "vulns": 38,
+      "candidates": 204
+    },
+    "nuttx": {
+      "vulns": 5,
+      "candidates": 480
+    },
+    "threadx": {
+      "vulns": 5,
+      "candidates": 25
+    },
+    "netxduo": {
+      "vulns": 15,
+      "candidates": 36
+    },
+    "esp-idf": {
+      "vulns": 56,
+      "candidates": 1065
+    },
+    "micropython": {
+      "vulns": 9,
+      "candidates": 144
+    },
+    "esphome": {
+      "vulns": 6,
+      "candidates": 120
+    },
+    "mosquitto": {
+      "vulns": 11,
+      "candidates": 177
+    },
+    "open62541": {
+      "vulns": 11,
+      "candidates": 481
+    },
+    "mbedtls": {
+      "vulns": 10,
+      "candidates": 576
+    },
+    "wolfssl": {
+      "vulns": 114,
+      "candidates": 631
+    },
+    "mongoose": {
+      "vulns": 24,
+      "candidates": 81
+    }
+  },
+  "extra": {
+    "projectVulnPairs": 696,
+    "multiProjectVulns": 10,
+    "foreignGhsaVulns": 50,
+    "citedOnlyPairs": 120,
+    "noDateVulns": 53,
+    "notInNvdNoGhsa": 3,
+    "mergeFixCommits": 214,
+    "coreCommitsWithC": 1534,
+    "coreCommitsWithCPct": 92.1,
+    "coreSingleCommitVulns": 296,
+    "unresolvedRefShas": 0,
+    "near60Vulns": 184,
+    "near60ZephyrPct": 92.4,
+    "latestYearZephyrGhsa": 201,
+    "nvdTotalAtStart": 413940,
+    "excludedNames": "FreeRTOS-Kernel, FreeRTOS-Plus-TCP, Tasmota, mbed-os, openthread",
+    "linkedNvdOnly": 323,
+    "linkedGhsaOnly": 29,
+    "linkedBoth": 452,
+    "projectsWithGhsa": 8,
+    "lagNoZephyrMedian": 38.0,
+    "lagNoZephyrN": 326,
+    "threadxFirstYear": "2020"
+  },
+  "cpe": {
+    "cves": 660,
+    "mapped": 414,
+    "pct": 62.7,
+    "beforeTwentySeventeen": 7,
+    "mbedtlsCves": 73,
+    "mbedtlsMapped": 7,
+    "mbedtlsRefs": 132,
+    "mbedtlsReleaseRefs": 90,
+    "mbedtlsCommitRefs": 18
+  },
+  "external": {
+    "projectKb": {
+      "theirVulns": 1297,
+      "theirCommits": 1793,
+      "sharedVulns": 2,
+      "sharedCommits": 0,
+      "newVulns": 684,
+      "newCommits": 1985,
+      "coreNewVulns": 579
+    },
+    "cvefixes": {
+      "theirVulns": 11873,
+      "theirCommits": 12103,
+      "sharedVulns": 39,
+      "sharedCommits": 40,
+      "newVulns": 647,
+      "newCommits": 1945,
+      "coreNewVulns": 543,
+      "preCutoffVulns": 203,
+      "preCutoffShared": 39
+    }
+  },
+  "validation": {
+    "sampleSize": 200,
+    "labelled": 0
+  },
+  "validationAb": {
+    "sampleSize": 100,
+    "labelled": 0
+  }
+}

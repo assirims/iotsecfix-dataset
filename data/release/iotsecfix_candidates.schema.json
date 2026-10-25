@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "iotsecfix_candidates.schema.json",
+  "title": "IoTSecFix tier-C keyword candidates (UNVALIDATED)",
+  "description": "Default-branch commits not in tiers A/B whose message matches a security keyword (code/linking.py KEYWORDS). Not confirmed security fixes; see DATASHEET.md for the estimated precision.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["project", "repo", "commit", "parent_commits", "commit_date", "keywords", "subject", "commit_url"],
+    "properties": {
+      "project": {"type": "string"},
+      "repo": {"type": "string"},
+      "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+      "parent_commits": {"type": "string"},
+      "commit_date": {"type": "string", "format": "date-time"},
+      "keywords": {"type": "string", "description": "';'-joined keyword classes that matched."},
+      "subject": {"type": "string", "maxLength": 200},
+      "commit_url": {"type": "string"}
+    }
+  }
+}

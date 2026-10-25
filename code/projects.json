@@ -1,0 +1,133 @@
+{
+ "_doc": "Candidate pool fixed a priori on 2026-10-25 (see PROTOCOL.md section 2). 'aliases' are former GitHub owner/repo names that NVD reference URLs still use.",
+ "candidates": [
+  {
+   "id": "zephyr",
+   "repo": "zephyrproject-rtos/zephyr",
+   "kind": "RTOS",
+   "aliases": []
+  },
+  {
+   "id": "riot",
+   "repo": "RIOT-OS/RIOT",
+   "kind": "RTOS",
+   "aliases": []
+  },
+  {
+   "id": "contiki-ng",
+   "repo": "contiki-ng/contiki-ng",
+   "kind": "RTOS",
+   "aliases": []
+  },
+  {
+   "id": "nuttx",
+   "repo": "apache/nuttx",
+   "kind": "RTOS",
+   "aliases": [
+    "apache/incubator-nuttx"
+   ]
+  },
+  {
+   "id": "freertos-kernel",
+   "repo": "FreeRTOS/FreeRTOS-Kernel",
+   "kind": "RTOS",
+   "aliases": []
+  },
+  {
+   "id": "freertos-plus-tcp",
+   "repo": "FreeRTOS/FreeRTOS-Plus-TCP",
+   "kind": "net/protocol stack",
+   "aliases": []
+  },
+  {
+   "id": "threadx",
+   "repo": "eclipse-threadx/threadx",
+   "kind": "RTOS",
+   "aliases": [
+    "azure-rtos/threadx"
+   ]
+  },
+  {
+   "id": "netxduo",
+   "repo": "eclipse-threadx/netxduo",
+   "kind": "net/protocol stack",
+   "aliases": [
+    "azure-rtos/netxduo"
+   ]
+  },
+  {
+   "id": "esp-idf",
+   "repo": "espressif/esp-idf",
+   "kind": "firmware/SDK",
+   "aliases": []
+  },
+  {
+   "id": "micropython",
+   "repo": "micropython/micropython",
+   "kind": "firmware/SDK",
+   "aliases": []
+  },
+  {
+   "id": "esphome",
+   "repo": "esphome/esphome",
+   "kind": "firmware/SDK",
+   "aliases": []
+  },
+  {
+   "id": "tasmota",
+   "repo": "arendst/Tasmota",
+   "kind": "firmware/SDK",
+   "aliases": [
+    "arendst/Sonoff-Tasmota"
+   ]
+  },
+  {
+   "id": "openthread",
+   "repo": "openthread/openthread",
+   "kind": "net/protocol stack",
+   "aliases": []
+  },
+  {
+   "id": "mosquitto",
+   "repo": "eclipse-mosquitto/mosquitto",
+   "kind": "net/protocol stack",
+   "aliases": [
+    "eclipse/mosquitto"
+   ]
+  },
+  {
+   "id": "open62541",
+   "repo": "open62541/open62541",
+   "kind": "net/protocol stack",
+   "aliases": []
+  },
+  {
+   "id": "mbedtls",
+   "repo": "Mbed-TLS/mbedtls",
+   "kind": "crypto library",
+   "aliases": [
+    "ARMmbed/mbedtls",
+    "ARMmbed/mbed-crypto",
+    "Mbed-TLS/mbed-crypto"
+   ]
+  },
+  {
+   "id": "wolfssl",
+   "repo": "wolfSSL/wolfssl",
+   "kind": "crypto library",
+   "aliases": []
+  },
+  {
+   "id": "mongoose",
+   "repo": "cesanta/mongoose",
+   "kind": "net/protocol stack",
+   "aliases": []
+  },
+  {
+   "id": "mbed-os",
+   "repo": "ARMmbed/mbed-os",
+   "kind": "RTOS",
+   "aliases": []
+  }
+ ]
+}

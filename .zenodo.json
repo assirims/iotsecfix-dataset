@@ -1,0 +1,10 @@
+{
+  "title": "IoTSecFix: A Curated Dataset of Security-Fixing Commits in Open-Source IoT Software",
+  "upload_type": "dataset",
+  "version": "1.0.0",
+  "creators": [{"name": "Assiri, Mohammed", "affiliation": "Prince Sattam bin Abdulaziz University"}],
+  "description": "Links between vulnerabilities (CVE/GHSA) and fix commits in 14 open-source IoT projects (snapshot 2026-10-25), with CWE, CVSS severity, diff statistics, link provenance and change scope; unvalidated keyword candidates; JSON Schemas; datasheet; collection scripts.",
+  "license": "cc-by-4.0",
+  "keywords": ["vulnerability", "security fix", "IoT", "embedded software", "MSR", "dataset"],
+  "access_right": "open"
+}

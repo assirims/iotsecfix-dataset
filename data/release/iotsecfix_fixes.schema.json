@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "iotsecfix_fixes.schema.json",
+  "title": "IoTSecFix fix records",
+  "description": "One record per (vulnerability, fix commit) pair, tiers A and B. iotsecfix_fixes.json is an array of these; iotsecfix_fixes.csv has the same columns (lists joined with ';', booleans True/False, null as empty).",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["project", "repo", "vuln_id", "fix_commit", "parent_commits", "commit_date", "tiers", "link_sources"],
+    "properties": {
+      "project": {"type": "string", "description": "Short project id (code/projects.json)."},
+      "repo": {"type": "string", "pattern": "^[^/]+/[^/]+$", "description": "GitHub owner/name at snapshot time."},
+      "vuln_id": {"type": "string", "pattern": "^(CVE-\\d{4}-\\d{4,}|GHSA(-[23456789cfghjmpqrvwx]{4}){3})$", "description": "CVE id if one exists, else GHSA id."},
+      "cve_id": {"type": "string", "description": "CVE id or empty."},
+      "ghsa_id": {"type": "string", "description": "GHSA id of the project's repository advisory, or empty."},
+      "cwe_ids": {"type": "string", "description": "';'-joined CWE ids (NVD first, then GHSA); empty if none."},
+      "cvss_version": {"type": "string", "enum": ["", "2.0", "3.0", "3.1", "3.x", "4.0"]},
+      "cvss_score": {"type": ["number", "null"], "minimum": 0, "maximum": 10},
+      "severity": {"type": "string", "enum": ["", "NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL", "MODERATE"]},
+      "severity_source": {"type": "string", "enum": ["", "nvd", "ghsa"]},
+      "published": {"type": "string", "description": "Earliest public date (NVD published or GHSA published_at), ISO 8601; empty if unknown."},
+      "fix_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+      "parent_commits": {"type": "string", "description": "';'-joined parent SHAs; diff stats use the first."},
+      "commit_date": {"type": "string", "format": "date-time", "description": "Committer date, UTC."},
+      "on_default_branch": {"type": "boolean"},
+      "is_revert": {"type": "boolean", "description": "Commit subject starts with 'Revert'."},
+      "pr_commits": {"type": ["integer", "null"], "minimum": 1, "description": "For links via a merged PR: number of commits that PR put on its target branch (largest if several PRs). null for direct links."},
+      "change_scope": {"type": "string", "enum": ["code", "test", "doc_ci"], "description": "code: at least one changed file is product code; test: only tests (and docs/CI); doc_ci: only documentation, CI or dependency-pin files."},
+      "files_changed": {"type": "integer", "minimum": 0},
+      "c_cpp_files": {"type": "integer", "minimum": 0, "description": "Changed files with a C/C++ extension (.c .h .cc .cpp .cxx .hh .hpp .hxx .ino)."},
+      "lines_added": {"type": "integer", "minimum": 0},
+      "lines_deleted": {"type": "integer", "minimum": 0},
+      "fix_to_publication_days": {"type": ["number", "null"], "description": "published - commit_date in days; positive = fixed before disclosure."},
+      "tiers": {"type": "string", "enum": ["A", "B", "A;B"]},
+      "link_sources": {"type": "string", "description": "';'-joined subset of commit_message, nvd_ref, ghsa_text, nvd_pr, ghsa_pr."},
+      "id_linked_to_project": {"type": "boolean", "description": "The vulnerability's NVD references or GHSA point to this repo (false: only cited in a commit message, e.g. vendored code)."},
+      "in_nvd": {"type": "boolean"},
+      "nvd_url": {"type": "string"},
+      "commit_url": {"type": "string"}
+    }
+  }
+}

@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use IoTSecFix, please cite it as below."
+title: "IoTSecFix: A Curated Dataset of Security-Fixing Commits in Open-Source IoT Software"
+version: "1.0.0"
+date-released: "2026-11-10"
+license: ["MIT", "CC-BY-4.0"]
+authors:
+  - family-names: Assiri
+    given-names: Mohammed
+    affiliation: "Prince Sattam bin Abdulaziz University"
+keywords: [vulnerability, security fix, IoT, embedded software, mining software repositories, dataset]
