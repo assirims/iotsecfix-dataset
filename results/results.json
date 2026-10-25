@@ -16,7 +16,23 @@
     "extra.coreCommitsWithCPct": 1,
     "extra.near60ZephyrPct": 1,
     "cpe.pct": 1,
-    "extra.lagNoZephyrMedian": 0
+    "extra.lagNoZephyrMedian": 0,
+    "validation.precisionPct": 1,
+    "validation.ciLowPct": 1,
+    "validation.ciHighPct": 1,
+    "validationAb.tierA.precisionPct": 1,
+    "validationAb.tierA.ciLowPct": 1,
+    "validationAb.tierA.ciHighPct": 1,
+    "validationAb.tierA.strictPct": 1,
+    "validationAb.tierB.precisionPct": 1,
+    "validationAb.tierB.ciLowPct": 1,
+    "validationAb.tierB.ciHighPct": 1,
+    "validationAb.tierB.strictPct": 1,
+    "validationAb.tierBSingle.precisionPct": 1,
+    "validationAb.tierBMulti.precisionPct": 1,
+    "validationAb.highConf.precisionPct": 1,
+    "validationAb.highConf.ciLowPct": 1,
+    "validationAb.highConf.ciHighPct": 1
   },
   "snapshotDate": "2026-10-25",
   "nvdCves": 413944,
@@ -50,10 +66,10 @@
       "qThree": 66.81
     },
     "lagN": 633,
-    "scopeCode": 2214,
+    "scopeCode": 2122,
     "scopeTest": 98,
-    "scopeDocCi": 284,
-    "tierAScopeDocCi": 274,
+    "scopeDocCi": 376,
+    "tierAScopeDocCi": 366,
     "tierBScopeDocCi": 10,
     "fixBeforePublicationPct": 83.6,
     "linkedVulns": 804,
@@ -66,9 +82,9 @@
     "prUnresolved": 3,
     "candidates": 6846,
     "core": {
-      "vulns": 581,
-      "records": 2214,
-      "fixCommits": 1666
+      "vulns": 575,
+      "records": 2122,
+      "fixCommits": 1618
     },
     "largePrRecords": 332,
     "largePrVulns": 23,
@@ -153,8 +169,8 @@
     "notInNvdNoGhsa": 3,
     "mergeFixCommits": 214,
     "coreCommitsWithC": 1534,
-    "coreCommitsWithCPct": 92.1,
-    "coreSingleCommitVulns": 296,
+    "coreCommitsWithCPct": 94.8,
+    "coreSingleCommitVulns": 294,
     "unresolvedRefShas": 0,
     "near60Vulns": 184,
     "near60ZephyrPct": 92.4,
@@ -188,7 +204,7 @@
       "sharedCommits": 0,
       "newVulns": 684,
       "newCommits": 1985,
-      "coreNewVulns": 579
+      "coreNewVulns": 573
     },
     "cvefixes": {
       "theirVulns": 11873,
@@ -197,17 +213,61 @@
       "sharedCommits": 40,
       "newVulns": 647,
       "newCommits": 1945,
-      "coreNewVulns": 543,
+      "coreNewVulns": 537,
       "preCutoffVulns": 203,
       "preCutoffShared": 39
     }
   },
   "validation": {
     "sampleSize": 200,
-    "labelled": 0
+    "labelled": 200,
+    "securityFix": 41,
+    "precisionPct": 20.5,
+    "unsure": 17,
+    "ciLowPct": 15.5,
+    "ciHighPct": 26.6
   },
   "validationAb": {
     "sampleSize": 100,
-    "labelled": 0
-  }
+    "labelled": 100,
+    "tierA": {
+      "n": 50,
+      "correct": 10,
+      "precisionPct": 20.0,
+      "ciLowPct": 11.2,
+      "ciHighPct": 33.0,
+      "strictPct": 20.0,
+      "unsure": 1
+    },
+    "tierB": {
+      "n": 50,
+      "correct": 34,
+      "precisionPct": 68.0,
+      "ciLowPct": 54.2,
+      "ciHighPct": 79.2,
+      "strictPct": 58.0,
+      "unsure": 6
+    },
+    "tierBSingle": {
+      "n": 25,
+      "correct": 22,
+      "precisionPct": 88.0,
+      "notFix": 0
+    },
+    "tierBMulti": {
+      "n": 25,
+      "correct": 12,
+      "precisionPct": 48.0,
+      "notFix": 10
+    },
+    "highConf": {
+      "n": 14,
+      "correct": 11,
+      "precisionPct": 78.6,
+      "ciLowPct": 52.4,
+      "ciHighPct": 92.4
+    }
+  },
+  "highConfRecords": 478,
+  "highConfVulns": 412
 }

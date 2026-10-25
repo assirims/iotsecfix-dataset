@@ -104,3 +104,6 @@ def test_change_scope():
     assert L.change_scope(["subsys/net/ip/ipv6.c", "tests/net/ipv6/src/main.c"]) == "code"
     assert L.change_scope(["README.md"]) == "doc_ci"
     assert L.change_scope([]) == "doc_ci"
+    assert L.change_scope(["components/fatfs/sbom.yml"]) == "doc_ci"
+    assert L.change_scope(["excluded_cves.yaml", ".gitmodules"]) == "doc_ci"
+    assert L.change_scope(["components/mbedtls/mbedtls"]) == "code"  # submodule bump may deliver a fix

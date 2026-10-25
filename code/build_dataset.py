@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "data/raw"
 ACTIVE_SINCE = "2025-10-25"
 MIN_MAPPED, MAX_PROJECTS = 5, 15
+SCOPE_V = 2  # bump when linking.change_scope changes, to recompute cached scopes
 C_EXT = re.compile(r"\.(?:c|h|cc|cpp|cxx|hh|hpp|hxx|ino)$", re.I)
 
 FIX_FIELDS = ["project", "repo", "vuln_id", "cve_id", "ghsa_id", "cwe_ids", "cvss_version",
@@ -132,7 +133,7 @@ def numstat(repo: Path, sha: str, parents: list[str]) -> dict:
         add += int(a) if a != "-" else 0
         dele += int(d) if d != "-" else 0
     return {"files": len(paths), "add": add, "del": dele, "scope": L.change_scope(paths),
-            "cfiles": sum(bool(C_EXT.search(p)) for p in paths)}
+            "cfiles": sum(bool(C_EXT.search(p)) for p in paths), "v": SCOPE_V}
 
 
 def build_project(c: dict, nvd: dict, cache: dict, prs: dict) -> dict:
@@ -203,7 +204,7 @@ def build_project(c: dict, nvd: dict, cache: dict, prs: dict) -> dict:
             info["sources"].add("commit_message")
 
     fixes = []
-    work = sorted({h for (_, h) in links if "cfiles" not in cache.get(f"{c['id']}:{h}", {})})
+    work = sorted({h for (_, h) in links if cache.get(f"{c['id']}:{h}", {}).get("v") != SCOPE_V or "cfiles" not in cache.get(f"{c['id']}:{h}", {})})
     with ThreadPoolExecutor(8) as ex:
         for h, ns in zip(work, ex.map(lambda h: numstat(repo, h, commits[h]["parents"]), work)):
             cache[f"{c['id']}:{h}"] = ns

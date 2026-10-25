@@ -10,7 +10,7 @@ Follows "Datasheets for Datasets" (Gebru et al., CACM 2021). Numbers below are f
   maintenance of embedded software. Existing fix datasets (Big-Vul, CVEfixes, MoreFixes,
   Project KB) are not built around IoT/embedded projects.
 - **Creator.** Mohammed Assiri, Department of Computer Science, College of Computer Engineering
-  and Sciences, Prince Sattam bin Abdulaziz University. **Funding.** FUNDING-PENDING (author to state).
+  and Sciences, Prince Sattam bin Abdulaziz University. **Funding.** None.
 
 ## Composition
 - **Instances.** `iotsecfix_fixes`: {total[records]} (vulnerability, fix commit) records covering

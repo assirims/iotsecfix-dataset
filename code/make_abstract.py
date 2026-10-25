@@ -22,7 +22,9 @@ text = (
     "scope (code, test, or documentation/CI). Each record also gives the CWE, CVSS severity, fix "
     "and parent commits, files and lines changed, and the days between the fix and the "
     f"vulnerability's publication. Keyword-only candidate commits ({t['candidates']:,}) are "
-    "released separately as unvalidated, with seeded samples for precision estimation. The "
+    "released separately. Seeded samples labelled by an LLM estimate precision per tier and "
+    f"support a high-confidence subset of {r['highConfRecords']} records "
+    f"({r['validationAb']['highConf']['precisionPct']}% precision in the sample). The "
     "release contains CSV and JSON files, JSON Schemas, a datasheet, and the collection scripts."
 )
 (ROOT / "abstract_draft.txt").write_text(text + "\n")

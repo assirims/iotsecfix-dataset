@@ -10,7 +10,7 @@ Follows "Datasheets for Datasets" (Gebru et al., CACM 2021). Numbers below are f
   maintenance of embedded software. Existing fix datasets (Big-Vul, CVEfixes, MoreFixes,
   Project KB) are not built around IoT/embedded projects.
 - **Creator.** Mohammed Assiri, Department of Computer Science, College of Computer Engineering
-  and Sciences, Prince Sattam bin Abdulaziz University. **Funding.** FUNDING-PENDING (author to state).
+  and Sciences, Prince Sattam bin Abdulaziz University. **Funding.** None.
 
 ## Composition
 - **Instances.** `iotsecfix_fixes`: 2596 (vulnerability, fix commit) records covering
@@ -25,7 +25,7 @@ Follows "Datasheets for Datasets" (Gebru et al., CACM 2021). Numbers below are f
 - **Coverage.** 576 of 804 vulnerabilities whose NVD/GHSA records point to a
   selected repo have at least one fix commit (71.6%).
 - **Change scope.** code / test / doc_ci from changed paths; core subset (scope code):
-  2214 records, 581 vulnerabilities.
+  2122 records, 575 vulnerabilities.
 - **Labels/fields.** See `iotsecfix_fixes.schema.json`. Severity and CWE come from NVD
   (fallback GHSA); 90.7% of vulnerabilities have a CWE.
 - **Missing data.** Disclosure date unknown for some GHSA-only records; report date is not
@@ -57,4 +57,4 @@ Follows "Datasheets for Datasets" (Gebru et al., CACM 2021). Numbers below are f
   acceptance (MSR policy). Maintainer: TBD. Re-running the scripts regenerates a newer snapshot.
 
 ## Validation
-A seeded sample of 100 records (half tier A, half tier B) is being labelled by the author to estimate link precision per tier. Tier C precision is not yet known: a seeded, project-stratified sample of 200 candidates is being labelled by the author.
+On a seeded sample of 100 records labelled by Claude (an LLM; not checked by a human), link precision is 20.0% for tier A (95% CI 11.2--33.0) and 68.0% for tier B (54.2--79.2), counting a commit as correct when it fixes the vulnerability or is part of its fix (test or refactoring in the fix); counting only commits that contain fixing code, 20.0% and 58.0%; 7 records were labelled unsure and count as incorrect. Tier-B errors concentrate in commits taken from multi-commit pull requests: 10 of 25 such records do not fix the linked vulnerability, against 0 of 25 single-commit links. Most tier-A errors are commits that only touch metadata (documentation, CI, SBOM disposition lists) or cite IDs of other software. Among the 14 sampled records that pass the high-confidence filter of the paper's Using the Data section, precision is 78.6% (52.4--92.4); the filter keeps 478 records and 412 vulnerabilities. Of 200 seeded tier-C candidates labelled by Claude (an LLM; not checked by a human), 41 are security fixes (precision 20.5%, 95% CI 15.5--26.6; 17 unsure, counted as not confirmed).

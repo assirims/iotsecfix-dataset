@@ -5,6 +5,7 @@ Usage: python code/stats.py   (then: python ../shared/scripts/make_macros.py .)
 import csv
 import json
 import math
+import re
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -210,6 +211,7 @@ def main() -> None:
             k = sum(r["label"].strip() == "security_fix" for r in lab)
             lo, hi = wilson(k, len(lab))
             res["validation"].update({"securityFix": k, "precisionPct": round(100 * k / len(lab), 1),
+                                      "unsure": sum(r["label"].strip() == "unsure" for r in lab),
                                       "ciLowPct": round(100 * lo, 1), "ciHighPct": round(100 * hi, 1)})
     vab = ROOT / "data/validation_sample_ab.csv"
     if vab.exists():
@@ -221,9 +223,44 @@ def main() -> None:
                 rs = [r for r in rows if r["stratum"] == tier]
                 k = sum(r["label"].strip() in ("fixes_vulnerability", "part_of_fix") for r in rs)
                 lo, hi = wilson(k, len(rs))
+                k2 = sum(r["label"].strip() == "fixes_vulnerability" for r in rs)
                 res["validationAb"][f"tier{tier}"] = {
                     "n": len(rs), "correct": k, "precisionPct": round(100 * k / len(rs), 1),
-                    "ciLowPct": round(100 * lo, 1), "ciHighPct": round(100 * hi, 1)}
+                    "ciLowPct": round(100 * lo, 1), "ciHighPct": round(100 * hi, 1),
+                    "strictPct": round(100 * k2 / len(rs), 1),
+                    "unsure": sum(r["label"].strip() == "unsure" for r in rs)}
+        if rows and all(r["label"].strip() for r in rows):
+            # tier B split: direct/single-commit links vs commits from multi-commit pull requests
+            idx = {(f["vuln_id"], f["fix_commit"]): f for f in fixes}
+            for name, cond in (("single", lambda pc: (pc or 1) == 1), ("multi", lambda pc: (pc or 1) > 1)):
+                rs = [r for r in rows if r["stratum"] == "B" and
+                      cond(idx[(r["vuln_id"], r["commit_url"].rsplit("/", 1)[1])]["pr_commits"])]
+                k = sum(r["label"].strip() in ("fixes_vulnerability", "part_of_fix") for r in rs)
+                res["validationAb"][f"tierB{name.title()}"] = {
+                    "n": len(rs), "correct": k, "precisionPct": round(100 * k / len(rs), 1) if rs else 0.0,
+                    "notFix": sum(r["label"].strip() == "not_fix" for r in rs)}
+            # recommended high-confidence filter (paper Sec. V), applied to the sampled records
+            hc = [r for r in rows if (lambda f: f["id_linked_to_project"] and f["on_default_branch"]
+                                      and (f["pr_commits"] or 1) == 1 and f["change_scope"] == "code")(
+                idx[(r["vuln_id"], r["commit_url"].rsplit("/", 1)[1])])]
+            k = sum(r["label"].strip() in ("fixes_vulnerability", "part_of_fix") for r in hc)
+            lo, hi = wilson(k, len(hc))
+            res["validationAb"]["highConf"] = {"n": len(hc), "correct": k,
+                                               "precisionPct": round(100 * k / len(hc), 1) if hc else 0.0,
+                                               "ciLowPct": round(100 * lo, 1), "ciHighPct": round(100 * hi, 1)}
+            res["highConfRecords"] = sum(1 for f in fixes if f["id_linked_to_project"] and f["on_default_branch"]
+                                         and (f["pr_commits"] or 1) == 1 and f["change_scope"] == "code")
+            res["highConfVulns"] = len({f["vuln_id"] for f in fixes if f["id_linked_to_project"]
+                                        and f["on_default_branch"] and (f["pr_commits"] or 1) == 1
+                                        and f["change_scope"] == "code"})
+    for blk in ("validation", "validationAb"):  # every percentage: one decimal
+        def walk(d, pre):
+            for k, v in d.items():
+                if isinstance(v, dict):
+                    walk(v, pre + [k])
+                elif isinstance(v, float) and k.endswith("Pct"):
+                    res["_format"][".".join(pre + [k])] = 1
+        walk(res.get(blk, {}), [blk])
     (ROOT / "results").mkdir(exist_ok=True)
     (ROOT / "results/results.json").write_text(json.dumps(res, indent=2))
 
@@ -269,18 +306,33 @@ def main() -> None:
               .replace(",", "{,}"), r"\bottomrule", r"\end{tabular}"]
     (gen / "tab_quality.tex").write_text("\n".join(lines) + "\n")
     # generated sentences (so the paper text changes only through scripts)
+    llm = (ROOT / "data/labeller.txt").exists()
+    who = "labelled by Claude (an LLM; not checked by a human)" if llm else "labelled by the author"
     va, vc = res.get("validationAb", {}), res.get("validation", {})
     if "tierA" in va:
         a_, b_ = va["tierA"], va["tierB"]
-        sab = (f"On a seeded sample of {va['sampleSize']} records labelled by the author, link precision "
+        sab = (f"On a seeded sample of {va['sampleSize']} records {who}, link precision "
                f"is {a_['precisionPct']}\\% for tier~A (95\\% CI {a_['ciLowPct']}--{a_['ciHighPct']}) and "
-               f"{b_['precisionPct']}\\% for tier~B ({b_['ciLowPct']}--{b_['ciHighPct']}).")
+               f"{b_['precisionPct']}\\% for tier~B ({b_['ciLowPct']}--{b_['ciHighPct']}), counting a commit as "
+               "correct when it fixes the vulnerability or is part of its fix (test or refactoring in the fix); "
+               f"counting only commits that contain fixing code, {a_['strictPct']}\\% and {b_['strictPct']}\\%; "
+               f"{a_['unsure'] + b_['unsure']} records were labelled unsure and count as incorrect. "
+               f"Tier-B errors concentrate in commits taken from multi-commit pull requests: "
+               f"{va['tierBMulti']['notFix']} of {va['tierBMulti']['n']} such records do not fix the linked "
+               f"vulnerability, against {va['tierBSingle']['notFix']} of {va['tierBSingle']['n']} single-commit "
+               f"links. Most tier-A errors are commits that only touch metadata (documentation, CI, SBOM "
+               f"disposition lists) or cite IDs of other software. Among the {va['highConf']['n']} sampled records "
+               f"that pass the high-confidence filter of Sec.~\\ref{{sec:using}}, precision is "
+               f"{va['highConf']['precisionPct']}\\% ({va['highConf']['ciLowPct']}--{va['highConf']['ciHighPct']}); "
+               f"the filter keeps {res['highConfRecords']:,} records and {res['highConfVulns']} vulnerabilities."
+               .replace(",", "{,}"))
     else:
         sab = (f"A seeded sample of {va.get('sampleSize', 0)} records (half tier~A, half tier~B) is being "
                "labelled by the author to estimate link precision per tier.")
     if "precisionPct" in vc:
-        sc = (f"Of {vc['labelled']} seeded tier-C candidates labelled by the author, {vc['securityFix']} are "
-              f"security fixes (precision {vc['precisionPct']}\\%, 95\\% CI {vc['ciLowPct']}--{vc['ciHighPct']}).")
+        sc = (f"Of {vc['labelled']} seeded tier-C candidates {who}, {vc['securityFix']} are "
+              f"security fixes (precision {vc['precisionPct']}\\%, 95\\% CI {vc['ciLowPct']}--{vc['ciHighPct']}; "
+              f"{vc['unsure']} unsure, counted as not confirmed).")
     else:
         sc = (f"Tier~C precision is not yet known: a seeded, project-stratified sample of "
               f"{vc.get('sampleSize', 0)} candidates is being labelled by the author.")
@@ -307,9 +359,10 @@ def main() -> None:
         vs = f"Sample of {v['sampleSize']} tier-C candidates drawn; labelling pending ({v['labelled']} done)."
     else:
         vs = "Validation sample not yet drawn."
-    vs = (sab + " " + sc).replace("~", " ").replace("\\%", "%")
-    tmpl = (ROOT / "code/DATASHEET.template.md").read_text().replace("VALIDATION_SECTION", vs)
-    (ROOT / "data/release/DATASHEET.md").write_text(tmpl.format(**res))
+    vs = (sab + " " + sc).replace("~", " ").replace("\\%", "%").replace("{,}", ",")
+    vs = re.sub(r"Sec\. ?\\ref\{[^}]*\}", "the paper's Using the Data section", vs)
+    tmpl = (ROOT / "code/DATASHEET.template.md").read_text().format(**res)
+    (ROOT / "data/release/DATASHEET.md").write_text(tmpl.replace("VALIDATION_SECTION", vs))
     print(json.dumps(res["total"], indent=1))
 
 

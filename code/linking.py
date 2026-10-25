@@ -114,12 +114,16 @@ def days_between(published: str, commit_epoch: int) -> float:
 _DOC = re.compile(r"(?:^|/)(?:docs?|documentation)/|\.(?:md|rst|adoc|txt\.in)$|"
                   r"(?:^|/)(?:README|CHANGELOG|ChangeLog|NEWS|RELEASE[^/]*|SECURITY)[^/]*$", re.I)
 _CI = re.compile(r"^\.(?:github|gitlab|circleci|ci)/|^\.gitlab-ci|(?:^|/)ci/|"
-                 r"(?:^|/)requirements[^/]*\.txt$|(?:^|/)Dockerfile$|^\.pre-commit", re.I)
+                 r"(?:^|/)requirements[^/]*\.txt$|(?:^|/)Dockerfile$|^\.pre-commit|"
+                 # SBOM / vulnerability-disposition metadata and submodule config
+                 r"(?:^|/)sbom[^/]*\.ya?ml$|\.spdx(?:\.json)?$|(?:^|/)[^/]*(?:excluded|ignored?)_cves?[^/]*$|"
+                 r"(?:^|/)\.gitmodules$", re.I)
 _TEST = re.compile(r"(?:^|/)(?:tests?|testing|unittests?|fuzz(?:ing)?)/|(?:^|/)test_[^/]*$", re.I)
 
 
 def change_scope(paths: list[str]) -> str:
-    """'code' if any changed file is product code; else 'test' if any test file; else 'doc_ci'."""
+    """'code' if any changed file is product code; else 'test' if any test file; else 'doc_ci'
+    (documentation, CI, dependency pins, SBOM/vulnerability-disposition metadata)."""
     if not paths:
         return "doc_ci"
     kinds = {"doc_ci" if (_DOC.search(p) or _CI.search(p)) else "test" if _TEST.search(p) else "code"

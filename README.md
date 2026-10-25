@@ -5,7 +5,8 @@ Snapshot date: 2026-10-25. Companion to the MSR 2027 Data and Tool Showcase pape
 
 ## Contents
 - `data/release/` — `iotsecfix_fixes.{csv,json}` (tiers A/B), `iotsecfix_candidates.{csv,json}`
-  (tier C, unvalidated), JSON Schemas, `DATASHEET.md`; `data/validation_sample.csv`.
+  (tier C, unvalidated), JSON Schemas, `DATASHEET.md`; labelled samples `data/validation_sample.csv`
+  (tier C) and `data/validation_sample_ab.csv` (tiers A/B), labelled by Claude (LLM), see `data/labeller.txt`.
 - `code/` — collection and analysis scripts with unit tests; `projects.json` = project pool.
 - `PROTOCOL.md` — selection rules, sources, linking rules, deviations.
 - `results/results.json` — every number in the paper.
@@ -15,7 +16,7 @@ Snapshot date: 2026-10-25. Companion to the MSR 2027 Data and Tool Showcase pape
 import pandas as pd
 d = pd.read_csv("data/release/iotsecfix_fixes.csv")
 core = d[d.change_scope == "code"]           # drop doc/CI-only and test-only links
-core = core[core.pr_commits.fillna(1) <= 5]  # optional: drop large PR bundles
+core = core[core.id_linked_to_project & core.on_default_branch & (core.pr_commits.fillna(1) <= 1)]  # high confidence
 ```
 Field definitions: `data/release/iotsecfix_fixes.schema.json`.
 
