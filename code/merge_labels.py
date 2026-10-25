@@ -41,4 +41,6 @@ def merge(name: str, target: Path) -> None:
 
 merge("c", ROOT / "data/validation_sample.csv")
 merge("ab", ROOT / "data/validation_sample_ab.csv")
-(ROOT / "data/labeller.txt").write_text("Claude (Anthropic), single LLM rater, not checked by a human\n")
+lf = ROOT / "data/labeller.txt"
+if not lf.exists():  # the author's review status is recorded in this file by hand afterwards
+    lf.write_text("Claude (Anthropic), single LLM rater, not checked by a human\n")

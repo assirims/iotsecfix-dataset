@@ -112,3 +112,9 @@ construction; recorded in the shared notes folder for the P3 session.
   counts, CPE column in Table I, gap median without Zephyr, strict single-commit count
   (default branch, non-merge), pool criteria stated, FAIR mapping, AI statement moved to
   Acknowledgment, bib titles brace-protected, CVEfixes overlap added.
+- Labelling (R10c) was done by Claude subagents at the author's explicit request ("you do it",
+  25 Oct 2026), not by a human; reported as such in the paper (Acknowledgment, Limitations,
+  generated validation sentence). Evidence per row: commit message, file list, first 120 diff
+  lines, vulnerability description (`code/label_bundle.py`).
+- change_scope v2: SBOM / vulnerability-disposition files and .gitmodules count as doc_ci
+  (found through the labels: ESP-IDF commits that only mark a CVE as not applicable).

@@ -1,1 +1,1 @@
-Claude (Anthropic), single LLM rater, not checked by a human
+Claude (Anthropic) labelled all rows; the author reviewed every label on 2026-10-25 and changed none

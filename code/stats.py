@@ -306,8 +306,11 @@ def main() -> None:
               .replace(",", "{,}"), r"\bottomrule", r"\end{tabular}"]
     (gen / "tab_quality.tex").write_text("\n".join(lines) + "\n")
     # generated sentences (so the paper text changes only through scripts)
-    llm = (ROOT / "data/labeller.txt").exists()
-    who = "labelled by Claude (an LLM; not checked by a human)" if llm else "labelled by the author"
+    lab_f = ROOT / "data/labeller.txt"
+    lab = lab_f.read_text() if lab_f.exists() else ""
+    who = ("labelled by Claude (an LLM) and reviewed by the author, who changed no label"
+           if "reviewed" in lab else "labelled by Claude (an LLM; not checked by a human)" if lab
+           else "labelled by the author")
     va, vc = res.get("validationAb", {}), res.get("validation", {})
     if "tierA" in va:
         a_, b_ = va["tierA"], va["tierB"]
